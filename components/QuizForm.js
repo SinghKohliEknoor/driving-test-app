@@ -5,7 +5,7 @@ import { useState } from "react";
 export default function QuizForm({ onSubmit }) {
   const [province, setProvince] = useState("Alberta");
   const [licenseClass, setLicenseClass] = useState("Class 5");
-  const [difficulty, setDifficulty] = useState("Easy");
+  const [difficulty, setDifficulty] = useState("Medium");
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -13,45 +13,42 @@ export default function QuizForm({ onSubmit }) {
   };
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-5">
-      <div>
-        <label className="block text-gray-900 font-semibold mb-1">
-          Province
-        </label>
+    <form
+      onSubmit={handleSubmit}
+      className="bg-white text-gray-900 rounded-xl shadow-md p-6 w-full max-w-lg mx-auto"
+    >
+      <h2 className="text-2xl font-semibold text-center mb-4">
+        Alberta Driving Knowledge Test
+      </h2>
+
+      <div className="mb-4">
+        <label className="block mb-1 font-medium">Province</label>
         <select
-          className="w-full border border-gray-300 text-gray-900 bg-white rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-400"
           value={province}
           onChange={(e) => setProvince(e.target.value)}
+          className="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-500"
         >
           <option>Alberta</option>
-          <option>Ontario</option>
-          <option>British Columbia</option>
         </select>
       </div>
 
-      <div>
-        <label className="block text-gray-900 font-semibold mb-1">
-          License Class
-        </label>
+      <div className="mb-4">
+        <label className="block mb-1 font-medium">License Class</label>
         <select
-          className="w-full border border-gray-300 text-gray-900 bg-white rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-400"
           value={licenseClass}
           onChange={(e) => setLicenseClass(e.target.value)}
+          className="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-500"
         >
           <option>Class 5</option>
-          <option>Class 3</option>
-          <option>Class 1</option>
         </select>
       </div>
 
-      <div>
-        <label className="block text-gray-900 font-semibold mb-1">
-          Difficulty
-        </label>
+      <div className="mb-4">
+        <label className="block mb-1 font-medium">Difficulty</label>
         <select
-          className="w-full border border-gray-300 text-gray-900 bg-white rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-400"
           value={difficulty}
           onChange={(e) => setDifficulty(e.target.value)}
+          className="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-500"
         >
           <option>Easy</option>
           <option>Medium</option>
@@ -61,7 +58,7 @@ export default function QuizForm({ onSubmit }) {
 
       <button
         type="submit"
-        className="w-full bg-indigo-600 text-white font-semibold py-2 px-4 rounded hover:bg-indigo-700 transition"
+        className="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 rounded transition"
       >
         Start Test
       </button>
