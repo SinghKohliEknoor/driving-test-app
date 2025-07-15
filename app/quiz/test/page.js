@@ -12,6 +12,7 @@ export default function QuizTestPage() {
   const [selected, setSelected] = useState(null);
   const [feedback, setFeedback] = useState(null);
   const [showResult, setShowResult] = useState(false);
+  const [result, setResult] = useState(null);
 
   useEffect(() => {
     const stored = sessionStorage.getItem("questions");
@@ -38,11 +39,12 @@ export default function QuizTestPage() {
     );
 
     setTimeout(() => {
-      if (
-        correct + (isCorrect ? 1 : 0) >= 25 ||
-        incorrect + (!isCorrect ? 1 : 0) >= 6
-      ) {
+      if (correct + (isCorrect ? 1 : 0) >= 25) {
         setShowResult(true);
+        setResult("passed");
+      } else if (incorrect + (!isCorrect ? 1 : 0) >= 6) {
+        setShowResult(true);
+        setResult("failed");
       } else {
         setIndex((i) => i + 1);
         setSelected(null);
@@ -62,6 +64,9 @@ export default function QuizTestPage() {
         <p className="text-xl">
           ❌ Incorrect:{" "}
           <span className="font-bold text-red-500">{incorrect}</span>
+        </p>
+        <p className="text-lg mt-4">
+          You have {result === "passed" ? "🎉passed" : "😞failed"} the test.
         </p>
         <button
           onClick={() => router.push("/quiz")}
@@ -109,7 +114,7 @@ export default function QuizTestPage() {
           {feedback && (
             <div
               className={`mt-4 text-lg font-semibold text-center ${
-                feedback.includes("Correct") ? "text-green-600" : "text-red-500"
+                feedback == "✅ Correct!" ? "text-green-600" : "text-red-500"
               }`}
             >
               {feedback}

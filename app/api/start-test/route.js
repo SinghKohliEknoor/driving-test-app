@@ -27,7 +27,6 @@ export async function POST(req) {
 
     const content = completion.choices[0]?.message?.content;
 
-    // Extract only the first JSON array from the content
     const jsonMatch = content.match(/\[\s*{[\s\S]*?}\s*]/);
     if (!jsonMatch) throw new Error("No valid JSON array found in response");
 
@@ -35,7 +34,7 @@ export async function POST(req) {
 
     return NextResponse.json({ questions });
   } catch (error) {
-    console.error("❌ Error in /api/start-test:", error);
+    console.error("Error in /api/start-test:", error);
     return NextResponse.json(
       { error: "Failed to generate quiz." },
       { status: 500 }

@@ -39,7 +39,7 @@ export default function QuizForm({ onSubmit }) {
           onChange={(e) => setLicenseClass(e.target.value)}
           className="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-500"
         >
-          <option>Class 5</option>
+          <option>Class 7</option>
         </select>
       </div>
 
