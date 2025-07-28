@@ -2,6 +2,10 @@
 
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
+import useSWR from "swr";
+
+// Fetcher function for SWR
+const fetcher = (url) => fetch(url).then((res) => res.json());
 
 export default function QuizTestPage() {
   const router = useRouter();
@@ -14,11 +18,34 @@ export default function QuizTestPage() {
   const [showResult, setShowResult] = useState(false);
   const [result, setResult] = useState(null);
 
+  const { data, error, isLoading } = useSWR("/api/me", fetcher);
+  const user = data?.user;
+
   useEffect(() => {
+    // Redirect to login if not authenticated
+    if (!isLoading && !user) {
+      router.push("/api/auth/login");
+      return;
+    }
+
     const stored = sessionStorage.getItem("questions");
     if (stored) setQuestions(JSON.parse(stored));
     else router.push("/quiz");
-  }, [router]);
+  }, [user, isLoading, router]);
+
+  // Show loading while checking authentication
+  if (isLoading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-indigo-500 via-purple-500 to-pink-400">
+        <p className="text-lg text-white">Loading...</p>
+      </div>
+    );
+  }
+
+  // Don't render anything if not authenticated (will redirect)
+  if (!user) {
+    return null;
+  }
 
   if (!questions.length || !questions[index]) {
     return (
@@ -32,8 +59,10 @@ export default function QuizTestPage() {
     e.preventDefault();
     const correctAnswer = questions[index].answer;
     const isCorrect = selected === correctAnswer;
+
     if (isCorrect) setCorrect((c) => c + 1);
     else setIncorrect((c) => c + 1);
+
     setFeedback(
       isCorrect ? "✅ Correct!" : `❌ Incorrect. Correct: ${correctAnswer}`
     );
@@ -66,7 +95,7 @@ export default function QuizTestPage() {
           <span className="font-bold text-red-500">{incorrect}</span>
         </p>
         <p className="text-lg mt-4">
-          You have {result === "passed" ? "🎉passed" : "😞failed"} the test.
+          You have {result === "passed" ? "🎉 passed" : "😞 failed"} the test.
         </p>
         <button
           onClick={() => router.push("/quiz")}
@@ -86,14 +115,24 @@ export default function QuizTestPage() {
         <h2 className="text-xl font-bold mb-6">
           Question {index + 1} of {questions.length}
         </h2>
+
         <form onSubmit={handleSubmit}>
-          <p className="mb-4 text-lg font-medium">{currentQ.question}</p>
+          <p className="mb-4 text-lg font-medium">{currentQ.question_text}</p>
+
+          {currentQ.image_url && (
+            <img
+              src={currentQ.image_url}
+              alt="Question related"
+              className="mb-4 w-full max-h-60 object-contain border rounded"
+            />
+          )}
+
           <div className="space-y-3">
-            {currentQ.options.map((opt, i) => (
+            {Object.entries(currentQ.options).map(([key, value]) => (
               <label
-                key={i}
+                key={key}
                 className={`block px-4 py-2 rounded border ${
-                  selected === opt
+                  selected === key
                     ? "bg-blue-100 border-blue-500"
                     : "bg-gray-50 border-gray-300 hover:bg-gray-100"
                 }`}
@@ -101,25 +140,27 @@ export default function QuizTestPage() {
                 <input
                   type="radio"
                   name="answer"
-                  value={opt}
-                  checked={selected === opt}
-                  onChange={() => setSelected(opt)}
+                  value={key}
+                  checked={selected === key}
+                  onChange={() => setSelected(key)}
                   required
                   className="mr-2"
                 />
-                {opt}
+                <strong>{key}.</strong> {value}
               </label>
             ))}
           </div>
+
           {feedback && (
             <div
               className={`mt-4 text-lg font-semibold text-center ${
-                feedback == "✅ Correct!" ? "text-green-600" : "text-red-500"
+                feedback === "✅ Correct!" ? "text-green-600" : "text-red-500"
               }`}
             >
               {feedback}
             </div>
           )}
+
           {!feedback && (
             <button
               type="submit"

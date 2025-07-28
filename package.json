@@ -9,10 +9,16 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@auth0/auth0-react": "^2.4.0",
+    "@auth0/nextjs-auth0": "^3.5.0",
+    "@supabase/supabase-js": "^2.51.0",
+    "framer-motion": "^12.23.9",
+    "jsonwebtoken": "^9.0.2",
     "next": "15.3.4",
     "openai": "^5.8.2",
     "react": "^19.0.0",
-    "react-dom": "^19.0.0"
+    "react-dom": "^19.0.0",
+    "swr": "^2.3.4"
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3",
