@@ -28,7 +28,7 @@ export async function POST() {
       return variants[randomIndex];
     });
 
-    // 4. Shuffle and take 30
+    // 4. Shuffle and take 30 (image URLs are already complete)
     const shuffled = uniqueVariants.sort(() => 0.5 - Math.random());
     const selected = shuffled.slice(0, 30);
 

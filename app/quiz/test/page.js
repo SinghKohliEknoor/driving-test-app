@@ -122,7 +122,7 @@ export default function QuizTestPage() {
           {currentQ.image_url && (
             <img
               src={currentQ.image_url}
-              alt="Question related"
+              alt="Question related image"
               className="mb-4 w-full max-h-60 object-contain border rounded"
             />
           )}

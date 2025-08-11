@@ -2,6 +2,7 @@
 import { getSession } from "@auth0/nextjs-auth0";
 import { NextRequest, NextResponse } from "next/server";
 import { cookies } from "next/headers";
+import { extractUserFromToken, isTokenExpired } from "@/lib/jwt";
 
 export async function GET(request) {
   try {
@@ -21,26 +22,28 @@ export async function GET(request) {
       });
     }
 
-    // Fallback: Try to read session cookie directly
+    // Enhanced fallback using JWT utilities
     const cookieStore = await cookies();
     const sessionCookie = cookieStore.get("appSession");
 
     if (sessionCookie) {
       try {
-        // Parse the session cookie (this is a simplified approach)
-        const sessionData = JSON.parse(
-          Buffer.from(sessionCookie.value.split(".")[1], "base64").toString()
-        );
+        // Extract the JWT token from the session cookie
+        const tokenParts = sessionCookie.value.split(".");
+        if (tokenParts.length === 3) {
+          const token = sessionCookie.value;
 
-        if (sessionData.user) {
-          return NextResponse.json({
-            user: {
-              sub: sessionData.user.sub,
-              name: sessionData.user.name,
-              email: sessionData.user.email,
-              picture: sessionData.user.picture,
-            },
-          });
+          // Check if token is expired
+          if (isTokenExpired(token)) {
+            console.log("Session token has expired");
+            return NextResponse.json({ user: null });
+          }
+
+          // Extract user data using JWT utilities
+          const userData = extractUserFromToken(token);
+          if (userData) {
+            return NextResponse.json({ user: userData });
+          }
         }
       } catch (parseError) {
         console.log("Could not parse session cookie:", parseError.message);

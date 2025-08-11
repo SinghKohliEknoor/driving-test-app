@@ -5,6 +5,7 @@
 import { useRouter } from "next/navigation";
 import { motion } from "framer-motion";
 import useSWR from "swr";
+import Link from "next/link";
 
 // ✅ Safer fetcher to prevent JSON parse errors
 const fetcher = async (...args) => {
@@ -85,18 +86,12 @@ export default function Home() {
         ) : (
           // ✅ Not logged in
           <div className="flex flex-col sm:flex-row justify-center gap-4">
-            <a
+            <Link
               href="/api/auth/login"
               className="bg-indigo-600 hover:bg-indigo-700 text-white font-semibold px-6 py-3 rounded-full shadow transition"
             >
               Log In
-            </a>
-            <a
-              href="/api/auth/signup"
-              className="bg-white border border-indigo-600 text-indigo-600 font-semibold px-6 py-3 rounded-full shadow transition hover:bg-indigo-50"
-            >
-              Sign Up
-            </a>
+            </Link>
           </div>
         )}
       </motion.div>
