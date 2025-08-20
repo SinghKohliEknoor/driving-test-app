@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import useSWR from "swr";
+import Link from "next/link";
 
 // Fetcher function for SWR
 const fetcher = (url) => fetch(url).then((res) => res.json());
@@ -36,8 +37,8 @@ export default function QuizTestPage() {
   // Show loading while checking authentication
   if (isLoading) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-indigo-500 via-purple-500 to-pink-400">
-        <p className="text-lg text-white">Loading...</p>
+      <div className="min-h-screen flex items-center justify-center bg-slate-100">
+        <p className="text-lg text-gray-800">Loading...</p>
       </div>
     );
   }
@@ -110,7 +111,7 @@ export default function QuizTestPage() {
   const currentQ = questions[index];
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-white to-blue-100 px-4 py-8 text-gray-900">
+    <div className="min-h-screen flex items-center justify-center bg-slate-100 px-4 py-8 text-gray-900">
       <div className="bg-white rounded-xl shadow-lg p-8 w-full max-w-2xl border border-gray-200">
         <h2 className="text-xl font-bold mb-6">
           Question {index + 1} of {questions.length}

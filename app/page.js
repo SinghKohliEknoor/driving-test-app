@@ -34,12 +34,12 @@ export default function Home() {
   const user = data?.user;
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-indigo-500 via-purple-500 to-pink-400 flex items-center justify-center px-6 py-12">
+    <div className="min-h-screen bg-slate-100 flex items-center justify-center px-6 py-12">
       <motion.div
         initial={{ opacity: 0, y: -40 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.8 }}
-        className="bg-white/90 backdrop-blur-md rounded-xl shadow-xl p-10 max-w-2xl w-full text-center"
+        className="bg-white rounded-xl shadow-xl p-10 max-w-2xl w-full text-center border border-gray-200"
       >
         <motion.h1
           initial={{ opacity: 0, y: -20 }}
@@ -76,12 +76,12 @@ export default function Home() {
             >
               Start Test
             </motion.button>
-            <a
+            <Link
               href="/api/auth/logout"
               className="block text-sm text-red-500 mt-4 hover:underline"
             >
               Log out
-            </a>
+            </Link>
           </div>
         ) : (
           // ✅ Not logged in
